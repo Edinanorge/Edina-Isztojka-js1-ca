@@ -104,20 +104,51 @@ h1 {
 
 /* Contact page */
 
-form {
+.form {
   max-width: 60%;
   margin: 0 auto;
   padding: 2rem;
   background: white;
 }
+.form-control {
+  padding-bottom: 20px;
+  position: relative;
+}
 
-input {
+.form-control input {
   width: 100%;
   margin-top: 0.1rem;
   padding: 0.7rem;
   font-size: 1rem;
 }
 
+.form-control::placeholder input {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.form-control label {
+  display: inline-block;
+  margin-top: 2rem;
+}
+
+.form-control.error input {
+  border: 1px solid #d40005;
+}
+.form-control.success input {
+  border: 1px solid green;
+}
+.form-control .form-error {
+  color: #d40005;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+}
+
+.form-control.error .form-error {
+  visibility: visible;
+}
 button {
   background: #1a0dab;
   font-size: 1.2rem;
@@ -130,26 +161,6 @@ button {
   border-radius: 0.2rem;
 
   display: block;
-}
-
-button:disabled {
-  background-color: #333;
-}
-
-label {
-  display: inline-block;
-  margin-top: 2rem;
-}
-
-input::placeholder {
-  font-size: 1rem;
-  opacity: 0.7;
-}
-
-.form-error {
-  color: #d40005;
-  font-size: 0.9rem;
-  margin-top: 0.2rem;
 }
 
 .contact-p {

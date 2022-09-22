@@ -1,75 +1,56 @@
-import { displayMessage } from "./displayMessage.js";
-
-const form = document.querySelector("form");
+const form = document.querySelector(".form");
 const fullName = document.querySelector("#name");
-const nameError = document.querySelector("#nameError");
 const subject = document.querySelector("#subject");
-const subjectError = document.querySelector("#subjectError");
 const email = document.querySelector("#email");
-const emailError = document.querySelector("#emailError");
 const address = document.querySelector("#address");
-const addressError = document.querySelector("#addressError");
-const submitBtn = document.querySelector("button");
 
-// function to check the input value
-function validatForm() {
-  if (checkValue(fullName.value, 0)) {
-    nameError.innerHTML = "";
-    fullName.style.border = "2px solid green";
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  validateForm();
+});
+
+function validateForm() {
+  if (fullName.value.trim() === "" || fullName.value.trim() == null) {
+    setError(fullName, "Name is required.");
   } else {
-    nameError.innerHTML = "Please enter your name";
+    setSuccess(fullName);
   }
 
-  if (checkValue(subject.value, 11)) {
-    subjectError.innerHTML = "";
-    subject.style.border = "2px solid green";
+  if (subject.value.trim().length <= 10) {
+    setError(subject, "Subject must be minimum 10 character long.");
   } else {
-    subjectError.innerHTML = "Your subject must be at least 10 characters";
+    setSuccess(subject);
   }
 
-  if (checkEmail(email.value)) {
-    emailError.innerHTML = "";
-    email.style.border = "2px solid green";
+  if (address.value.trim().length <= 25) {
+    setError(address, "Address must be minimum 25 character long.");
   } else {
-    emailError.innerHTML = "Please enter a valid email address";
+    setSuccess(address);
   }
 
-  if (checkValue(address.value, 26)) {
-    addressError.innerHTML = "";
-    address.style.border = "2px solid green";
+  if (email.value.trim() === "") {
+    setError(email, "Email is required.");
+  } else if (!checkEmail(email.value)) {
+    setError(email, "Email is not valid");
   } else {
-    addressError.innerHTML = "Your address must be at least 25 characters";
-  }
-
-  if (
-    checkValue(fullName.value, 0) &&
-    checkValue(subject.value, 10) &&
-    checkEmail(email.value) &&
-    checkValue(address.value, 25)
-  ) {
-    submitBtn.disabled = false;
-  } else {
-    submitBtn.disabled = true;
+    setSuccess(email);
   }
 }
 
-fullName.addEventListener("keyup", validatForm);
-subject.addEventListener("keyup", validatForm);
-email.addEventListener("keyup", validatForm);
-address.addEventListener("keyup", validatForm);
+function setError(input, message) {
+  const formControl = input.parentElement;
+  const formError = formControl.querySelector(".form-error");
+  formControl.className = "form-control error";
+  formError.innerText = message;
+}
 
-form.addEventListener("submit", validatForm);
-
-function checkValue(value, length) {
-  if (value.trim().length > length) {
-    return true;
-  } else {
-    return false;
-  }
+function setSuccess(input) {
+  const formControl = input.parentElement;
+  formControl.className = "form-control success";
 }
 
 function checkEmail(email) {
-  const regEx = /\S+@\S+\.\S+/;
-  const passedEmail = regEx.test(email);
-  return passedEmail;
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
 }
